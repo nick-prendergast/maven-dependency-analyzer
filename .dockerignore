@@ -1,0 +1,89 @@
+over# Build artifacts and dependencies
+target/
+*.jar
+*.class
+*.war
+*.ear
+dependency-reduced-pom.xml
+
+# IDE files and settings
+.idea/
+.vscode/
+.eclipse/
+.settings/
+*.iml
+*.ipr
+*.iws
+*.project
+*.classpath
+.metadata/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.tmp
+*.temp
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+.svn/
+.hg/
+
+# Docker files (prevent recursive copying)
+Dockerfile*
+docker-compose*.yml
+docker-compose*.yaml
+.dockerignore
+.env*
+
+# Documentation and notes
+*.md
+*.txt
+*.rst
+docs/
+CODE_GUIDE.md
+CHANGELOG*
+LICENSE*
+NOTICE*
+
+# Application output and logs
+output/
+logs/
+*.log
+*.log.*
+
+# Test and build reports
+target/surefire-reports/
+target/site/
+target/jacoco/
+coverage/
+test-output/
+
+# Node.js (if any frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.backup
+*.bak
+*.swp
+*.swo
+*~
+.#*
+
+# Security and secrets (extra safety)
+*.key
+*.pem
+*.p12
+*.jks
+secrets/
+.secrets/

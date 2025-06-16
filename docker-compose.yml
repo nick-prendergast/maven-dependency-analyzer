@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  maven-analyzer:
+    build: .
+    container_name: maven-dependency-analyzer
+    volumes:
+      # Mount user's local .m2 repository (contains downloaded JARs for SHA1 calculation)
+      - ${HOME}/.m2:/root/.m2
+      # Mount the Maven project you want to analyze (override with PROJECT_PATH env var)
+      - ${PROJECT_PATH:-./sample-project}:/project:ro
+      # Mount output directory (override with OUTPUT_PATH env var)
+      - ${OUTPUT_PATH:-./output}:/output
+    # Override default command if needed
+    # command: ["-d", "/project", "-o", "/output/my-dependencies.json"]
+    
+  # Alternative service for analyzing current directory
+  analyze-current:
+    build: .
+    container_name: maven-analyzer-current
+    volumes:
+      - ${HOME}/.m2:/root/.m2
+      - .:/project:ro
+      - ./output:/output
+    command: ["-d", "/project", "-o", "/output/current-project-deps.json"]

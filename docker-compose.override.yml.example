@@ -1,0 +1,25 @@
+# Example docker-compose override file
+# Copy this to docker-compose.override.yml and customize for your needs
+# This file allows you to override settings without modifying the main docker-compose.yml
+
+version: '3.8'
+
+services:
+  maven-analyzer:
+    volumes:
+      # Example: analyze a specific project on your system
+      - /home/youruser/projects/my-spring-app:/project:ro
+      # Example: save output to a specific location
+      - /home/youruser/analysis-results:/output
+    # Example: override the default command
+    # command: ["-d", "/project", "-o", "/output/my-custom-analysis.json"]
+    
+  # You can define additional services here if needed
+  # analyze-my-project:
+  #   build: .
+  #   container_name: maven-analyzer-my-project
+  #   volumes:
+  #     - ~/.m2:/root/.m2
+  #     - /path/to/my/specific/project:/project:ro
+  #     - ./output:/output
+  #   command: ["-d", "/project", "-o", "/output/my-project-deps.json"]

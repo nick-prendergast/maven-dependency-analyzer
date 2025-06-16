@@ -115,26 +115,6 @@ The `analyze` script provides the easiest way to run the analyzer:
 ./analyze -d /absolute/path/to/project -o output.json  # Absolute path
 ```
 
-### Windows Users
-
-For Windows users without bash:
-
-1. **Option 1: Use Git Bash** (comes with Git for Windows)
-   ```bash
-   ./analyze -d . -o dependencies.json
-   ```
-
-### Local Development (without Docker)
-
-For developers who want to run locally:
-
-```bash
-# Build the project
-./mvnw clean package
-
-# Run directly with Java
-java -jar target/maven-dependency-analyzer-*.jar -d /path/to/project -o output.json
-```
 
 ## Sample Output
 
@@ -232,12 +212,6 @@ java -jar target/maven-dependency-analyzer-*.jar -d /path/to/project -o output.j
 mvn test
 ```
 
-### Model Architecture
-- **`AnalyzedDependency`** - Represents individual dependencies in the tree structure
-- **`AnalysisResult`** - Contains the complete analysis output with project metadata
-
-The architecture emphasizes single responsibility principle with each class handling a specific concern, making the codebase maintainable and testable.
-
 ## Public Libraries Used
 
 As required, all public libraries/tools are documented below:
@@ -261,15 +235,3 @@ As required, all public libraries/tools are documented below:
 ### Test Dependencies
 - **JUnit 5 (5.10.1)** - Unit testing framework
 - **Mockito (5.8.0)** - Mocking framework for unit tests
-
-### Platform Independence
-This tool is designed to work across all platforms where Java runs:
-
-- **Cross-platform File Operations**: Uses Java NIO.2 (`Path`/`Paths`) instead of platform-specific file separators
-- **Universal Path Handling**: Automatically handles Windows (`\`), Unix/Linux/macOS (`/`) path separators
-- **Maven Resolver**: Platform-independent dependency resolution (same behavior on all OS)
-- **Local Repository Detection**: Automatically finds `.m2/repository` on all platforms:
-  - Windows: `%USERPROFILE%\.m2\repository`
-  - Unix/Linux/macOS: `~/.m2/repository`
-- **JSON Output**: UTF-8 encoding ensures consistent output across platforms
-

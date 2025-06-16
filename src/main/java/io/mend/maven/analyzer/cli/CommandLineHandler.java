@@ -1,5 +1,8 @@
 package io.mend.maven.analyzer.cli;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.*;
 
 public class CommandLineHandler {
@@ -45,7 +48,7 @@ public class CommandLineHandler {
         return options;
     }
     
-    public CommandLineArguments parseArguments(String[] args) throws ParseException {
+    public CommandLineArguments parseArguments(@NonNull String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         
@@ -62,6 +65,15 @@ public class CommandLineHandler {
         
         if (output == null) {
             throw new ParseException("Missing required option: -" + OPTION_OUTPUT);
+        }
+        
+        // Validate directory exists
+        java.io.File dir = new java.io.File(directory);
+        if (!dir.exists()) {
+            throw new ParseException("Directory does not exist: " + directory);
+        }
+        if (!dir.isDirectory()) {
+            throw new ParseException("Path is not a directory: " + directory);
         }
         
         return new CommandLineArguments(false, directory, output);
@@ -82,27 +94,11 @@ public class CommandLineHandler {
                 true);
     }
     
+    @Getter
+    @RequiredArgsConstructor
     public static class CommandLineArguments {
         private final boolean helpRequested;
         private final String directory;
         private final String outputPath;
-        
-        public CommandLineArguments(boolean helpRequested, String directory, String outputPath) {
-            this.helpRequested = helpRequested;
-            this.directory = directory;
-            this.outputPath = outputPath;
-        }
-        
-        public boolean isHelpRequested() {
-            return helpRequested;
-        }
-        
-        public String getDirectory() {
-            return directory;
-        }
-        
-        public String getOutputPath() {
-            return outputPath;
-        }
     }
 }

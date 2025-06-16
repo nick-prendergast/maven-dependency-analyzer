@@ -1,12 +1,7 @@
 package io.mend.maven.analyzer.exception;
 
+import lombok.experimental.StandardException;
+
+@StandardException
 public class MavenProjectException extends Exception {
-    
-    public MavenProjectException(String message) {
-        super(message);
-    }
-    
-    public MavenProjectException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

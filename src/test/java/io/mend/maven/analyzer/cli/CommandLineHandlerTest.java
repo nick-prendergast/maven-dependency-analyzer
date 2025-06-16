@@ -17,23 +17,25 @@ class CommandLineHandlerTest {
     
     @Test
     void testParseArguments_ValidArgs_ReturnsCorrectArguments() throws ParseException {
-        String[] args = {"-d", "/path/to/project", "-o", "output.json"};
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String[] args = {"-d", tempDir, "-o", "output.json"};
         
         CommandLineHandler.CommandLineArguments result = handler.parseArguments(args);
         
         assertFalse(result.isHelpRequested());
-        assertEquals("/path/to/project", result.getDirectory());
+        assertEquals(tempDir, result.getDirectory());
         assertEquals("output.json", result.getOutputPath());
     }
     
     @Test
     void testParseArguments_LongFlags_ReturnsCorrectArguments() throws ParseException {
-        String[] args = {"--directory", "/path/to/project", "--output", "output.json"};
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String[] args = {"--directory", tempDir, "--output", "output.json"};
         
         CommandLineHandler.CommandLineArguments result = handler.parseArguments(args);
         
         assertFalse(result.isHelpRequested());
-        assertEquals("/path/to/project", result.getDirectory());
+        assertEquals(tempDir, result.getDirectory());
         assertEquals("output.json", result.getOutputPath());
     }
     
@@ -60,12 +62,23 @@ class CommandLineHandlerTest {
     
     @Test
     void testParseArguments_MissingOutput_ThrowsParseException() {
-        String[] args = {"-d", "/path/to/project"};
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String[] args = {"-d", tempDir};
         
         ParseException exception = assertThrows(ParseException.class, 
             () -> handler.parseArguments(args));
         
         assertTrue(exception.getMessage().contains("Missing required option: -o"));
+    }
+    
+    @Test
+    void testParseArguments_DirectoryDoesNotExist_ThrowsParseException() {
+        String[] args = {"-d", "/path/that/does/not/exist", "-o", "output.json"};
+        
+        ParseException exception = assertThrows(ParseException.class, 
+            () -> handler.parseArguments(args));
+        
+        assertTrue(exception.getMessage().contains("Directory does not exist"));
     }
     
     @Test

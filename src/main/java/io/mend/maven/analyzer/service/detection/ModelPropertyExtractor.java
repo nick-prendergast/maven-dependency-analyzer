@@ -1,6 +1,10 @@
 package io.mend.maven.analyzer.service.detection;
 
+import lombok.NonNull;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
+
+import java.util.function.Function;
 
 /**
  * Extracts effective properties from Maven Model objects.
@@ -14,26 +18,30 @@ public class ModelPropertyExtractor {
     /**
      * Gets the effective groupId, falling back to parent if not set directly.
      */
-    public String getEffectiveGroupId(Model model) {
-        if (model.getGroupId() != null) {
-            return model.getGroupId();
-        }
-        if (model.getParent() != null && model.getParent().getGroupId() != null) {
-            return model.getParent().getGroupId();
-        }
-        return null;
+    public String getEffectiveGroupId(@NonNull Model model) {
+        return getEffectiveProperty(model, Model::getGroupId, Parent::getGroupId);
     }
     
     /**
      * Gets the effective version, falling back to parent if not set directly.
      */
-    public String getEffectiveVersion(Model model) {
-        if (model.getVersion() != null) {
-            return model.getVersion();
+    public String getEffectiveVersion(@NonNull Model model) {
+        return getEffectiveProperty(model, Model::getVersion, Parent::getVersion);
+    }
+    
+    private String getEffectiveProperty(@NonNull Model model, 
+                                        @NonNull Function<Model, String> modelGetter,
+                                        @NonNull Function<Parent, String> parentGetter) {
+        String value = modelGetter.apply(model);
+        if (value != null) {
+            return value;
         }
-        if (model.getParent() != null && model.getParent().getVersion() != null) {
-            return model.getParent().getVersion();
+        
+        Parent parent = model.getParent();
+        if (parent != null) {
+            return parentGetter.apply(parent);
         }
+        
         return null;
     }
 }

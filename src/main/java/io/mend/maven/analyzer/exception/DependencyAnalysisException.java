@@ -1,12 +1,7 @@
 package io.mend.maven.analyzer.exception;
 
+import lombok.experimental.StandardException;
+
+@StandardException
 public class DependencyAnalysisException extends Exception {
-    
-    public DependencyAnalysisException(String message) {
-        super(message);
-    }
-    
-    public DependencyAnalysisException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

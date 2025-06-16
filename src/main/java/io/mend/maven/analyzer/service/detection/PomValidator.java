@@ -1,6 +1,8 @@
 package io.mend.maven.analyzer.service.detection;
 
+import io.mend.maven.analyzer.config.MavenConstants;
 import io.mend.maven.analyzer.exception.MavenProjectException;
+import lombok.NonNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,14 +17,13 @@ import java.nio.file.Paths;
  */
 public class PomValidator {
     
-    private static final String POM_XML = "pom.xml";
     
     /**
      * Validates the project path and returns the path to the pom.xml file.
      */
-    public Path validatePomPath(String projectPath) throws MavenProjectException {
+    public Path validatePomPath(@NonNull String projectPath) throws MavenProjectException {
         Path projectDir = validateAndGetProjectPath(projectPath);
-        Path pomPath = projectDir.resolve(POM_XML);
+        Path pomPath = projectDir.resolve(MavenConstants.POM_XML_FILENAME);
         
         if (!Files.exists(pomPath)) {
             throw new MavenProjectException("No pom.xml found in project directory: " + projectPath);
@@ -38,9 +39,9 @@ public class PomValidator {
     /**
      * Validates that the project path exists and is a directory.
      */
-    private Path validateAndGetProjectPath(String projectPath) throws MavenProjectException {
-        if (projectPath == null || projectPath.trim().isEmpty()) {
-            throw new MavenProjectException("Project path cannot be null or empty");
+    private Path validateAndGetProjectPath(@NonNull String projectPath) throws MavenProjectException {
+        if (projectPath.trim().isEmpty()) {
+            throw new MavenProjectException("Project path cannot be empty");
         }
         
         Path path = Paths.get(projectPath);

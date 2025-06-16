@@ -1,6 +1,8 @@
 package io.mend.maven.analyzer;
 
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class TestConstants {
     
     public static final String TEST_PROJECT_GROUP_ID = "com.test";

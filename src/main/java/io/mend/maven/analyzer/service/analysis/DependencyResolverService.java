@@ -2,6 +2,7 @@ package io.mend.maven.analyzer.service.analysis;
 
 import io.mend.maven.analyzer.config.MavenResolverConfig;
 import io.mend.maven.analyzer.exception.DependencyAnalysisException;
+import lombok.NonNull;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.aether.artifact.Artifact;
@@ -30,11 +31,11 @@ public class DependencyResolverService {
     
     private final MavenResolverConfig config;
     
-    public DependencyResolverService(MavenResolverConfig config) {
+    public DependencyResolverService(@NonNull MavenResolverConfig config) {
         this.config = config;
     }
     
-    public DependencyNode resolveDependencies(Model model) throws DependencyAnalysisException {
+    public DependencyNode resolveDependencies(@NonNull Model model) throws DependencyAnalysisException {
         try {
             CollectRequest collectRequest = createCollectRequest(model);
             CollectResult collectResult = config.getRepositorySystem().collectDependencies(config.getSession(), collectRequest);
@@ -63,15 +64,7 @@ public class DependencyResolverService {
         
         if (model.getDependencies() != null) {
             for (Dependency dependency : model.getDependencies()) {
-                String coordinates = String.format("%s:%s:%s", 
-                    dependency.getGroupId(), 
-                    dependency.getArtifactId(), 
-                    dependency.getVersion() != null ? dependency.getVersion() : DEFAULT_VERSION);
-                
-                Artifact artifact = new DefaultArtifact(coordinates);
-                String scope = dependency.getScope() != null ? dependency.getScope() : DEFAULT_SCOPE;
-                
-                org.eclipse.aether.graph.Dependency aetherDependency = new org.eclipse.aether.graph.Dependency(artifact, scope);
+                org.eclipse.aether.graph.Dependency aetherDependency = getAetherDependency(dependency);
                 dependencies.add(aetherDependency);
             }
         }
@@ -81,5 +74,17 @@ public class DependencyResolverService {
         
         return collectRequest;
     }
-    
+
+    private static org.eclipse.aether.graph.Dependency getAetherDependency(Dependency dependency) {
+        String coordinates = String.format("%s:%s:%s",
+            dependency.getGroupId(),
+            dependency.getArtifactId(),
+            dependency.getVersion() != null ? dependency.getVersion() : DEFAULT_VERSION);
+
+        Artifact artifact = new DefaultArtifact(coordinates);
+        String scope = dependency.getScope() != null ? dependency.getScope() : DEFAULT_SCOPE;
+
+        return new org.eclipse.aether.graph.Dependency(artifact, scope);
+    }
+
 }

@@ -1,6 +1,7 @@
 package io.mend.maven.analyzer.service.detection;
 
 import io.mend.maven.analyzer.exception.MavenProjectException;
+import lombok.NonNull;
 import org.apache.maven.model.Model;
 
 import java.nio.file.Path;
@@ -28,7 +29,7 @@ public class MavenProjectDetectionService {
     /**
      * Reads and parses the POM file from the given project path.
      */
-    public Model readPomModel(String projectPath) throws MavenProjectException {
+    public Model readPomModel(@NonNull String projectPath) throws MavenProjectException {
         Path pomPath = validator.validatePomPath(projectPath);
         return parser.parsePomXml(pomPath.toFile());
     }
@@ -37,14 +38,14 @@ public class MavenProjectDetectionService {
     /**
      * Gets the effective groupId from the model.
      */
-    public String getEffectiveGroupId(Model model) {
+    public String getEffectiveGroupId(@NonNull Model model) {
         return extractor.getEffectiveGroupId(model);
     }
     
     /**
      * Gets the effective version from the model.
      */
-    public String getEffectiveVersion(Model model) {
+    public String getEffectiveVersion(@NonNull Model model) {
         return extractor.getEffectiveVersion(model);
     }
 }

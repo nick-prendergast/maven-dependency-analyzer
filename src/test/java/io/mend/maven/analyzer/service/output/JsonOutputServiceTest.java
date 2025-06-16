@@ -55,10 +55,10 @@ class JsonOutputServiceTest {
     void testWriteToFile_NullPath_ThrowsException() {
         AnalysisResult result = createSampleResult();
         
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        NullPointerException exception = assertThrows(NullPointerException.class,
             () -> service.writeToFile(result, null));
         
-        assertEquals("Output path cannot be null or empty", exception.getMessage());
+        assertEquals("outputPath is marked non-null but is null", exception.getMessage());
     }
     
     @Test
@@ -68,7 +68,7 @@ class JsonOutputServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> service.writeToFile(result, ""));
         
-        assertEquals("Output path cannot be null or empty", exception.getMessage());
+        assertEquals("Output path cannot be empty", exception.getMessage());
     }
     
     @Test

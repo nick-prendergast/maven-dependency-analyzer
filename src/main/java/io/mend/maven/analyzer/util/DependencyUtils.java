@@ -1,17 +1,15 @@
 package io.mend.maven.analyzer.util;
 
 import io.mend.maven.analyzer.model.entity.AnalyzedDependency;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
 /**
  * Utility class for common dependency operations.
  */
-public final class DependencyUtils {
-    
-    private DependencyUtils() {
-        // Utility class - prevent instantiation
-    }
+@UtilityClass
+public class DependencyUtils {
     
     /**
      * Counts the total number of dependencies recursively.

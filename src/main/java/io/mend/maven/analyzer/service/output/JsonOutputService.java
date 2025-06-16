@@ -3,6 +3,7 @@ package io.mend.maven.analyzer.service.output;
 import io.mend.maven.analyzer.model.response.AnalysisResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class JsonOutputService {
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
     
-    public void writeToFile(AnalysisResult result, String outputPath) throws IOException {
-        if (outputPath == null || outputPath.trim().isEmpty()) {
-            throw new IllegalArgumentException("Output path cannot be null or empty");
+    public void writeToFile(@NonNull AnalysisResult result, @NonNull String outputPath) throws IOException {
+        if (outputPath.trim().isEmpty()) {
+            throw new IllegalArgumentException("Output path cannot be empty");
         }
         
         Path path = Paths.get(outputPath);

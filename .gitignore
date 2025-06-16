@@ -43,3 +43,6 @@ output/
 
 ### Claude-specific ###
 .claude/
+
+### Maven Shade Plugin ###
+dependency-reduced-pom.xml

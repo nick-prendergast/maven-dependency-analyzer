@@ -88,7 +88,7 @@ For a project with Spring Boot dependencies:
       "version": "3.2.0",
       "scope": "compile",
       "sha1": "abc123...",
-      "dependencies": [...]
+      "dependencies": []
     }
   ],
   "totalDependencies": 42

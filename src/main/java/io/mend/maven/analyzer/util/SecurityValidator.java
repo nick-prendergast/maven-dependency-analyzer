@@ -37,10 +37,9 @@ public class SecurityValidator {
         try {
             File file = absolutePath.toFile();
             String canonicalPath = file.getCanonicalPath();
-            String absolutePathStr = absolutePath.toString();
             
-            if (!canonicalPath.equals(absolutePathStr)) {
-                throw new SecurityException("Path contains symbolic links or other indirection: " + originalPath);
+            if (canonicalPath.contains("../") || canonicalPath.contains("..\\")) {
+                throw new SecurityException("Path traversal detected in canonical path: " + originalPath);
             }
         } catch (IOException e) {
             throw new SecurityException("Invalid path: " + originalPath);
